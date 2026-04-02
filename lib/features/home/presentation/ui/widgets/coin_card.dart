@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:tminus1/core/theme/app_colors.dart';
+import 'package:tminus1/core/widgets/coin_icon.dart';
 import 'package:tminus1/core/widgets/coins_chart.dart';
 import 'package:tminus1/features/home/domain/models/coin.dart';
 
@@ -36,18 +37,7 @@ class CoinCard extends StatelessWidget {
                 ),
               ),
               Spacer(),
-              ClipOval(
-                child: CachedNetworkImage(
-                  imageUrl: coin.iconUrl,
-                  placeholder: (context, url) =>
-                      SvgPicture.asset("assets/svg/logo.svg"),
-                  errorWidget: (context, url, error) =>
-                      SvgPicture.asset("assets/svg/logo.svg"),
-                  width: 40,
-                  height: 40,
-                  fit: BoxFit.cover,
-                ),
-              ),
+              CoinIcon(iconUrl: coin.iconUrl)
             ],
           ),
           Row(

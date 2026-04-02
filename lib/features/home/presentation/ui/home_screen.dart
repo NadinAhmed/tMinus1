@@ -17,19 +17,19 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.darkBackground,
-      body: SingleChildScrollView(
-        physics: const ClampingScrollPhysics(),
-        padding: EdgeInsetsDirectional.only(bottom: 100),
-        child: BlocBuilder<HomeCubit, HomeState>(
-          builder: (context, state) {
-            if (state is HomeLoading) {
-              return LoadingScreen();
-            } else if (state is HomeError) {
-              return ErrorScreen(errorMessage: state.message);
-            } else if (state is HomeSuccess) {
-              final recentCoins = state.recentCoins;
-              final topCoins = state.topCoins;
-              return Column(
+      body: BlocBuilder<HomeCubit, HomeState>(
+        builder: (context, state) {
+          if (state is HomeLoading) {
+            return LoadingScreen();
+          } else if (state is HomeError) {
+            return ErrorScreen(errorMessage: state.message);
+          } else if (state is HomeSuccess) {
+            final recentCoins = state.recentCoins;
+            final topCoins = state.topCoins;
+            return SingleChildScrollView(
+              physics: const ClampingScrollPhysics(),
+              padding: EdgeInsetsDirectional.only(bottom: 100),
+              child: Column(
                 children: [
                   Padding(
                     padding: const EdgeInsetsDirectional.symmetric(
@@ -135,7 +135,7 @@ class HomeScreen extends StatelessWidget {
                             itemBuilder: (context, index) {
                               return SizedBox(
                                 width: 200,
-                                child: CoinCard(coin: recentCoins[index],),
+                                child: CoinCard(coin: recentCoins[index]),
                               );
                             },
                           ),
@@ -160,7 +160,10 @@ class HomeScreen extends StatelessWidget {
                             itemBuilder: (context, index) {
                               return SizedBox(
                                 width: 200,
-                                child: CoinCard(coin: topCoins[index], drawCoinsChart: true),
+                                child: CoinCard(
+                                  coin: topCoins[index],
+                                  drawCoinsChart: true,
+                                ),
                               );
                             },
                           ),
@@ -169,12 +172,12 @@ class HomeScreen extends StatelessWidget {
                     ),
                   ),
                 ],
-              );
-            }else{
-              return Container();
-            }
-          },
-        ),
+              ),
+            );
+          } else {
+            return Container();
+          }
+        },
       ),
     );
   }

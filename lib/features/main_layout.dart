@@ -4,7 +4,8 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:tminus1/core/theme/app_colors.dart';
 import 'package:tminus1/features/activity/activity_screen.dart';
 import 'package:tminus1/features/home/presentation/ui/home_screen.dart';
-import 'package:tminus1/features/markets/markets_screen.dart';
+import 'package:tminus1/features/markets/presentation/logic/markets_cubit.dart';
+import 'package:tminus1/features/markets/presentation/ui/markets_screen.dart';
 import 'package:tminus1/features/wallets/wallets_screen.dart';
 
 import '../core/di/depedancy_container.dart';
@@ -27,7 +28,11 @@ class _MainLayoutState extends State<MainLayout> {
         ..getTopCoins(),
       child: const HomeScreen(),
     ),
-    const MarketsScreen(),
+    BlocProvider(
+      create: (context) => sl<MarketsCubit>()
+        ..getAllMarkets(),
+      child: const MarketsScreen(),
+    ),
     const ActivityScreen(),
     const WalletsScreen(),
   ];
