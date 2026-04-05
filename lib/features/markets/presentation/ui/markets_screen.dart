@@ -15,14 +15,24 @@ class MarketsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.darkBackground,
-      body:BlocListener<MarketsCubit, MarketsState>(
+      body: BlocListener<MarketsCubit, MarketsState>(
         listenWhen: (previous, current) =>
-        current is MarketsSuccess && current.actionMessage != null,
+            current is MarketsSuccess && current.actionMessage != null,
         listener: (context, state) {
           if (state is MarketsSuccess && state.actionMessage != null) {
             context.read<WalletCubit>().loadAssets();
             ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text(state.actionMessage!)),
+              SnackBar(
+                content: Text(
+                  state.actionMessage!,
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    color: AppColors.black,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+                backgroundColor: AppColors.primary,
+              ),
             );
           }
         },
@@ -34,19 +44,15 @@ class MarketsScreen extends StatelessWidget {
               return ErrorScreen(errorMessage: state.message);
             } else if (state is MarketsSuccess) {
               final markets = state.allMarkets;
-              final walletAssets =
-                  context.watch<WalletCubit>().state.assets;
-              final favoritedIds =
-              walletAssets.map((a) => a.coinId).toSet();
+              final walletAssets = context.watch<WalletCubit>().state.assets;
+              final favoritedIds = walletAssets.map((a) => a.coinId).toSet();
 
               return Padding(
                 padding: const EdgeInsetsDirectional.only(bottom: 80),
                 child: ListView.separated(
                   padding: const EdgeInsets.symmetric(vertical: 12),
                   itemCount: markets.length,
-                  separatorBuilder: (_, __) => SizedBox(
-                    height: 8
-                  ),
+                  separatorBuilder: (_, __) => SizedBox(height: 8),
                   itemBuilder: (context, index) {
                     final coin = markets[index];
                     final isFav = favoritedIds.contains(coin.id);
@@ -57,8 +63,9 @@ class MarketsScreen extends StatelessWidget {
                       onAddToWallet: () {
                         final cubit = context.read<MarketsCubit>();
                         if (isFav) {
-                          final asset = walletAssets
-                              .firstWhere((a) => a.coinId == coin.id);
+                          final asset = walletAssets.firstWhere(
+                            (a) => a.coinId == coin.id,
+                          );
                           cubit.deleteAsset(asset.id!);
                         } else {
                           cubit.addAsset(
