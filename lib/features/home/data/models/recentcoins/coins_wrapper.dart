@@ -21,6 +21,7 @@ class CoinsWrapper {
 extension CoinsWrapperMapper on CoinsWrapper {
   Coin toDomain() {
     return Coin(
+      id: item.id,
       name: item.name,
       symbol: item.symbol,
       iconUrl: item.icon,

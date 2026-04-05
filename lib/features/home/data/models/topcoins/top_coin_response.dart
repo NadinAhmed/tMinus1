@@ -41,6 +41,7 @@ class TopCoinResponse {
 extension TopCoinMapper on TopCoinResponse {
   Coin toDomain() {
     return Coin(
+      id: id,
       name: name,
       symbol: symbol,
       iconUrl: iconUrl,

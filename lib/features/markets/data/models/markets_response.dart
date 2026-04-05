@@ -33,6 +33,7 @@ class MarketsResponse {
 extension MarketsMapper on MarketsResponse {
   Coin toDomain() {
     return Coin(
+      id: id,
       name: name,
       symbol: symbol,
       iconUrl: iconUrl,

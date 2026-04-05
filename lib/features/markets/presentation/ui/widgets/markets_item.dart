@@ -7,17 +7,20 @@ import '../../../../home/domain/models/coin.dart';
 
 class MarketsItem extends StatelessWidget {
   final Coin coin;
-  final VoidCallback? onTap;
+  final bool isFavorite;
+  final VoidCallback? onAddToWallet;
 
-  const MarketsItem({super.key, required this.coin, this.onTap});
+  const MarketsItem({super.key, required this.coin, this.onAddToWallet, this.isFavorite = false});
 
   @override
   Widget build(BuildContext context) {
     final isPositive = coin.priceRatio >= 0;
 
-    return InkWell(
-      onTap: onTap,
-      borderRadius: BorderRadius.circular(16),
+    return Container(
+      decoration: BoxDecoration(
+        color: AppColors.darkSurface,
+        borderRadius: BorderRadius.circular(16),
+      ),
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
         child: Row(
@@ -41,10 +44,7 @@ class MarketsItem extends StatelessWidget {
                   const SizedBox(height: 3),
                   Text(
                     coin.symbol.toUpperCase(),
-                    style: const TextStyle(
-                      color: AppColors.grey,
-                      fontSize: 12,
-                    ),
+                    style: const TextStyle(color: AppColors.grey, fontSize: 12),
                   ),
                 ],
               ),
@@ -72,6 +72,22 @@ class MarketsItem extends StatelessWidget {
                   ),
                 ),
               ],
+            ),
+            IconButton(
+              onPressed: onAddToWallet,
+              icon:AnimatedSwitcher(
+                duration: const Duration(milliseconds: 300),
+                transitionBuilder: (child, animation) => ScaleTransition(
+                  scale: animation,
+                  child: child,
+                ),
+                child: Icon(
+                  isFavorite ? Icons.favorite : Icons.favorite_border_outlined,
+                  key: ValueKey(isFavorite),
+                  color: isFavorite ? AppColors.primary : AppColors.primary,
+                  size: 22,
+                ),
+              ),
             ),
           ],
         ),
